@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Neural Network Mesh Background</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      overflow: auto;
+      background-color: #050a18;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      height: 100vh;
+      color: #fff;
+      position: relative;
+    }
+    
+    #canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+    }
+    
+    .content {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column; 
+      justify-content: center;
+      align-items: center;
+      height: auto; /* Change from 100% to auto to accommodate all content */
+      min-height: 100vh; /* Ensure it takes at least the full viewport height */
+      width: 100%;
+      text-align: center;
+      padding: 20px; 
+      top: 0;
+      left: 0;
+    }
+    
+    .content-inner {
+      background: rgba(16, 25, 56, 0.5);
+      background: transparent;
+      top: 0;
+      left: 0;      
+      width: 100%; /* Ensure full width */
+      
+      border-radius: 8px;
+      max-width: 100%;
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(103, 151, 255, 0.3);
+      box-shadow: 0 4px 30px rgba(0, 83, 255, 0.4);
+      padding: 10px;
+      margin: 10px; /* Center the content with margin */
+    }
+
+    .content-inner-1 {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap; /* Allow items to wrap on smaller screens */
+       /* Optional: space between items */
+    }
+    
+    /* Optional: make each inner content box flexible */
+    .content-inner {
+      flex: 1 1 45%; /* Adjust width and allow wrapping */
+      box-sizing: border-box;
+    }
+
+    @media (max-width: 768px) {
+      .content-inner-1 {
+        flex-direction: column;
+        align-items: stretch;
+      }
+    
+      .content-inner {
+        width: 100%;
+      }
+    }
+   
+
+    /* Navbar styles */
+
+ 
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      background: linear-gradient(90deg, #64b3f4, #c2e59c);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-weight: 700;
+    }
+    
+    p {
+      font-size: 1.1rem;
+      line-height: 1.6;
+      color: #c5d6f1;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="canvas"></canvas>
+  
+  <div class="content">
+      
+    
+      <h1>Neural Network</h1>
+      <p>An interactive neural mesh background that responds to your cursor movements. Ideal for AI, machine learning, or data Ideal for AI, machine learning, or datascience projects.An interactive neural mesh background that responds to your cursor movements. Ideal for AI, machine learning, or data Ideal for AI, machine learning, or datascience projects.</p>
+    
+
+  </div>
+
+  <div class="content" >
+   
+    
+    <div class="content-inner-1" >
+      <div class="content-inner" >
+        <div >
+          <h1>Neural Network</h1>
+          <p>An interactive neural mesh background that responds to your cursor movements. Ideal for AI, machine learning, or data Ideal for AI, machine learning, or datascience projects.An interactive neural mesh background that responds to your cursor movements. Ideal for AI, machine learning, or data Ideal for AI, machine learning, or datascience projects.</p>
+        </div>
+      </div>
+  
+      <div class="content-inner" >
+      <div >
+        <h1>Neural Network</h1>
+        <p>An interactive neural mesh background that responds to your cursor movements. Ideal for AI, machine learning, or data Ideal for AI, machine learning, or datascience projects.An interactive neural mesh background that responds to your cursor movements. Ideal for AI, machine learning, or data Ideal for AI, machine learning, or datascience projects.</p>
+      </div>
+    </div>
+
+    </div>
+
+  <div class="content" >
+    <h1>Neural Network</h1>
+    <p>An interactive neural mesh background that responds to your cursor movements. Ideal for AI, machine learning, or data Ideal for AI, machine learning, or datascience projects.An interactive neural mesh background that responds to your cursor movements. Ideal for AI, machine learning, or data Ideal for AI, machine learning, or datascience projects.</p>
+  </div>
+    
+    
+    
+  
+  
+
+  </div>
+
+  <script
+    const toggle = document.querySelector('.menu-toggle');
+    const navLinks = document.querySelector('.nav-links');
+    
+    toggle.addEventListener('click', () => {
+      navLinks.classList.toggle('show');
+    });
+</script>    
+
+  <script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    
+    // Set canvas dimensions
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    
+    // Configuration
+    const config = {
+      nodeCount: Math.min(Math.floor(window.innerWidth * window.innerHeight / 15000), 100),
+      nodeRadius: { min: 1, max: 3 },
+      nodeColor: '#4a78ff',
+      nodePulseSpeed: 0.02,
+      lineColor: 'rgba(103, 151, 255, 0.5)',
+      lineWidth: 0.5,
+      nodeSpeed: { min: 0.1, max: 0.5 },
+      connectionDistance: Math.min(window.innerWidth, window.innerHeight) * 0.15,
+      cursorInfluenceRadius: 200,
+      cursorRepelStrength: 20,
+      hoverGlowColor: 'rgba(103, 211, 255, 0.2)',
+    };
+    
+    // Mouse position
+    let mouse = {
+      x: undefined,
+      y: undefined,
+      active: false
+    };
+    
+    // Track mouse position
+    window.addEventListener('mousemove', (event) => {
+      mouse.x = event.x;
+      mouse.y = event.y;
+      mouse.active = true;
+    });
+    
+    window.addEventListener('mouseout', () => {
+      mouse.active = false;
+    });
+    
+    // Handle window resize
+    window.addEventListener('resize', () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      initNodes();
+    });
+    
+    // Node class
+    class Node {
+      constructor() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.radius = Math.random() * (config.nodeRadius.max - config.nodeRadius.min) + config.nodeRadius.min;
+        this.color = config.nodeColor;
+        this.speedX = (Math.random() - 0.5) * (config.nodeSpeed.max - config.nodeSpeed.min) + config.nodeSpeed.min;
+        this.speedY = (Math.random() - 0.5) * (config.nodeSpeed.max - config.nodeSpeed.min) + config.nodeSpeed.min;
+        this.lastMouse = { x: 0, y: 0 };
+        this.pulseDirection = Math.random() > 0.5 ? 1 : -1;
+        this.pulseValue = Math.random();
+        this.originalRadius = this.radius;
+        this.connections = [];
+      }
+      
+      update() {
+        // Move the node
+        this.x += this.speedX;
+        this.y += this.speedY;
+        
+        // Bounce off walls
+        if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+        if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+        
+        // Keep in bounds
+        this.x = Math.max(0, Math.min(canvas.width, this.x));
+        this.y = Math.max(0, Math.min(canvas.height, this.y));
+        
+        // Repel from cursor
+        if (mouse.active) {
+          const dx = mouse.x - this.x;
+          const dy = mouse.y - this.y;
+          const distance = Math.sqrt(dx * dx + dy * dy);
+          
+          if (distance < config.cursorInfluenceRadius) {
+            const angle = Math.atan2(dy, dx);
+            const repelForce = (1 - distance / config.cursorInfluenceRadius) * config.cursorRepelStrength;
+            
+            this.x -= Math.cos(angle) * repelForce * 0.1;
+            this.y -= Math.sin(angle) * repelForce * 0.1;
+            
+            this.lastMouse = { x: mouse.x, y: mouse.y };
+          }
+        }
+        
+        // Pulse effect
+        this.pulseValue += config.nodePulseSpeed * this.pulseDirection;
+        if (this.pulseValue > 1 || this.pulseValue < 0) {
+          this.pulseDirection *= -1;
+        }
+        
+        // Adjust radius based on pulse
+        this.radius = this.originalRadius * (1 + this.pulseValue * 0.3);
+      }
+      
+      draw() {
+        // Draw node
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fillStyle = this.color;
+        ctx.fill();
+        
+        // Draw glow
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius * 3, 0, Math.PI * 2);
+        const gradient = ctx.createRadialGradient(
+          this.x, this.y, this.radius,
+          this.x, this.y, this.radius * 3
+        );
+        gradient.addColorStop(0, 'rgba(103, 151, 255, 0.3)');
+        gradient.addColorStop(1, 'rgba(103, 151, 255, 0)');
+        ctx.fillStyle = gradient;
+        ctx.fill();
+      }
+      
+      connect(nodes) {
+        this.connections = [];
+        nodes.forEach(node => {
+          if (node !== this) {
+            const dx = this.x - node.x;
+            const dy = this.y - node.y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            
+            if (distance < config.connectionDistance) {
+              this.connections.push({
+                node: node,
+                distance: distance
+              });
+            }
+          }
+        });
+      }
+      
+      drawConnections() {
+        this.connections.forEach(conn => {
+          // Calculate opacity based on distance
+          const opacity = 1 - (conn.distance / config.connectionDistance);
+          
+          // Draw line
+          ctx.beginPath();
+          ctx.moveTo(this.x, this.y);
+          ctx.lineTo(conn.node.x, conn.node.y);
+          ctx.strokeStyle = `rgba(103, 151, 255, ${opacity * 0.5})`;
+          ctx.lineWidth = config.lineWidth;
+          ctx.stroke();
+        });
+      }
+    }
+    
+    // Array to store nodes
+    let nodes = [];
+    
+    // Initialize nodes
+    function initNodes() {
+      nodes = [];
+      for (let i = 0; i < config.nodeCount; i++) {
+        nodes.push(new Node());
+      }
+    }
+    
+    // Animation loop
+    function animate() {
+      requestAnimationFrame(animate);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      
+      // Update and connect nodes
+      nodes.forEach(node => {
+        node.update();
+        node.connect(nodes);
+      });
+      
+      // Draw connections first (so they appear behind nodes)
+      nodes.forEach(node => {
+        node.drawConnections();
+      });
+      
+      // Draw nodes on top
+      nodes.forEach(node => {
+        node.draw();
+      });
+      
+      // Draw cursor influence area if mouse is active
+      if (mouse.active) {
+        ctx.beginPath();
+        ctx.arc(mouse.x, mouse.y, config.cursorInfluenceRadius, 0, Math.PI * 2);
+        const cursorGradient = ctx.createRadialGradient(
+          mouse.x, mouse.y, 0,
+          mouse.x, mouse.y, config.cursorInfluenceRadius
+        );
+        cursorGradient.addColorStop(0, 'rgba(156, 217, 255, 0.15)');
+        cursorGradient.addColorStop(1, 'rgba(156, 217, 255, 0)');
+        ctx.fillStyle = cursorGradient;
+        ctx.fill();
+      } 
+    }
+    
+    // Initialize and start animation
+    initNodes();
+    animate();
+  </script>
+</body>
+</html>

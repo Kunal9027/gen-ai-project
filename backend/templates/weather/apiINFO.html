@@ -1,0 +1,26 @@
+{% extends "elements/base.html" %}
+
+{% block container %}
+
+<br>
+<br>
+   
+<div class="bg-transparent bg-blur-xl max-w-2xl mx-auto rounded-lg shadow-md p-3 ">
+    <h2 class="text-gray-900 text-lg font-bold mb-4">Weather Report</h2>
+    <div class="chat-container">  
+        <div class="chat-bubble bg-blue-200 text-gray-800 p-2 rounded-lg mb-2">
+                    <p class="text-lg font-bold"></p>
+                    <p class="text-lg"><strong>Location:</strong> {{ location }}</p>
+                    <p class="text-lg"><strong>temperature:</strong> {{ temperature }} Celcius </p>
+                    <p class="text-lg"><strong>humidity:</strong> {{ humidity }}</p>
+                    <p class="text-lg"><strong>dewpoint:</strong> {{ dewpoint }}</p>
+                    <p class="text-lg"><strong>rain_intensity:</strong> {{ rain_intensity }}</p>
+                    <p class="text-lg"><strong>uv_index:</strong> {{ uv_index }}</p>
+                    <p class="text-lg"><strong>wind_speed:</strong> {{ wind_speed }}</p>
+                </div>
+            </div>
+</div>
+
+    
+
+{% endblock container %}

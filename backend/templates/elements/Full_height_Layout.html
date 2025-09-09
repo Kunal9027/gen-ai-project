@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Layout with Navbar</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="flex flex-col min-h-screen">
+
+    <!-- Navigation Bar -->
+    <header class="bg-blue-100 p-4 text-black text-lg font-semibold shadow-md">
+        <div class="container mx-auto flex justify-between items-center">
+            <span>Navigation Bar</span>
+            
+            <!-- Hamburger Button -->
+            <button id="menu-btn" class="md:hidden text-black focus:outline-none">
+                ☰
+            </button>
+
+            <!-- Nav Links (Hidden by default on small screens) -->
+            <nav id="menu" class="hidden md:flex space-x-6">
+                <a href="#" class="text-black hover:underline">Home</a>
+                <a href="#" class="text-black hover:underline">Contact</a>
+            </nav>
+        </div>
+        
+        <!-- Mobile Menu (Dropdown) -->
+        <nav id="mobile-menu" class="hidden flex-col space-y-2 bg-blue-200 p-4 md:hidden">
+            <a href="#" class="block text-black hover:underline">Home</a>
+            <a href="#" class="block text-black hover:underline">Contact</a>
+        </nav>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="flex-1 p-6 bg-gray-100 flex items-center justify-center">
+        <div class="border-dashed border-2 border-gray-300 p-10 text-gray-600">
+            Main Content Area
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-100 p-4 text-black text-center">
+        Footer
+    </footer>
+
+    <!-- JavaScript for Toggle Menu -->
+    <script>
+        const menuBtn = document.getElementById('menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        menuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+    </script>
+
+</body>
+</html>
